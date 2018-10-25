@@ -1,2 +1,2 @@
-# Penbrothers-PML-Exam
+# PML-Exam
 An exam for full stack developers 
