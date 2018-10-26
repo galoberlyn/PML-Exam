@@ -39,7 +39,7 @@
       </div>
       <div class="modal-body">
       	<!-- todo form, validation and all that -->
-        <textarea class="form-control" style="min-width: 100%"></textarea>
+        <textarea rows="13" class="form-control" style="height: 100%;"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
