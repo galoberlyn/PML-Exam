@@ -37,7 +37,6 @@ class OrderController extends Controller
 	    	$processed       = str_replace(array("{", "}"), array("<",">"), $pml_string); //replace
 			$array_pml       = simplexml_load_string($processed); //convert to object
 	    	$pml_obj         = $this->xmlObjToArr($array_pml);
-            // return count($pml_obj[$children][$pizza][0][$children][$toppings][0][$children][$item]); //kinginamo
 			$check = Order::where('order_id',$pml_obj['attributes']['number'])->get();
 			if(count($check) > 0){
 				return redirect('/orders')->with("exist", "exist");
@@ -81,7 +80,7 @@ class OrderController extends Controller
 	    						for($j=0; $j<$toppings_counter; $j++){
 
 	    							if($pml_obj[$children][$pizza][$i][$children][$toppings][$j][$attributes][$area]==$j){
-                                        
+
 	    								for($k=0; $k<count($pml_obj[$children][$pizza][$i][$children][$toppings][$j][$children][$item]); $k++){
 	    									$pizza_topping_m             = new PizzaTopping;
                                             $pizza_topping_m->order_id = $pml_obj[$attributes][$number];
