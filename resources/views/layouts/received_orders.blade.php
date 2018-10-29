@@ -3,11 +3,12 @@
 
 @section('orders')
 
-<h1><span class="blue">{</span>Pizza<span class="blue">}</span><span class="yellow">Orders</pan></h1>
+<h1><span class="blue">{</span>Pizza<span class="blue">}</span><span class="yellow">Orders</span></h1>
+<h4 style="text-align:center"><span class="blue"><a href="/orders" class="btn btn-primary">Back to Orders</a></span></h4>
 
 
 	@if(count($order)===0)
-		<h1 class="yellow">There are no Orders as of the moment <span class="blue">:(</span></h1>
+		<h4 style="text-align:center;" class="yellow">There are no Orders as of the moment <span class="blue">:(</span></h4>
 	@else
 	<table class="container">
 		<thead>
@@ -34,13 +35,32 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Label2">Order Number echobravo</h5>
+        <h5 class="modal-title" id="Label2">Order Number {{$order_m->order_id}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-          <textarea name="pml_order" rows="16" style="font-size: 15px;" class="form-control"></textarea>
+          <p>
+          	@foreach($pizza as $pizzas)
+          		@if($pizzas->order_id == $order_m->order_id)
+          			<p>Pizza {{$pizzas->pizza_number}} - 
+          			@foreach($pizza_detail as $pizza_details)
+          				@if($pizza_details->order_id == $order_m->order_id && $pizza_details->pizza_id == $pizzas->pizza_id)
+          					{{$pizza_details->size}}, {{$pizza_details-> crust}},{{$pizza_details->type}}<br>
+          						
+          					@foreach($pizza_topping as $toppings)
+          						@if($toppings->order_id == $orders->order_id)
+          							{{$toppings->pizza_item}}
+          						@endif
+          					@endforeach
+
+          				@endif
+          			@endforeach
+          			</p>		
+          		@endif
+          	@endforeach
+          </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

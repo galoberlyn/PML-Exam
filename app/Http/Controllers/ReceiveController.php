@@ -12,8 +12,12 @@ class ReceiveController extends Controller
     //
     public function index(){
 
-    	$order = Order::all();
-    	return view('layouts.received_orders', compact('order'));
+    	$order         = Order::all();
+    	$pizza         = Pizza::all();
+    	$pizza_detail  = PizzaDetail::all();
+    	$pizza_topping = PizzaTopping::all();
+
+    	return view('layouts.received_orders', compact('order', 'pizza', 'pizza_detail', 'pizza_topping'));
     	
     }
 }

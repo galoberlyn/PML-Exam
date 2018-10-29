@@ -15,6 +15,7 @@ class PizzaToppings extends Migration
     {
         Schema::create('pizza_toppings', function (Blueprint $table) {
         $table->increments('id');
+        $table->integer('order_id');
         $table->integer('pizza_id');
         $table->integer('pizza_area');
         $table->string('pizza_item', 100);

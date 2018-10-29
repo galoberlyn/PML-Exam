@@ -10,15 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//GET ROUTES
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.order_system');
 });
 
 Route::get('/orders', function () {
     return view('layouts.order_system');
 });
 
-Route::post('/received', 'OrderController@order_validation');
-
 Route::get('/received', "ReceiveController@index");
+
+
+
+//POST ROUTES
+
+Route::post('/received', 'OrderController@order_validation');

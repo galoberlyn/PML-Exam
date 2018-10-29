@@ -32,7 +32,7 @@
 
 <main id="main">
 
-@include('layouts.messages');
+@include('layouts.messages')
 
 @yield('orders')
 
@@ -53,8 +53,13 @@
   $('#error').modal({
       show: true
   });
+
   $('#success').modal({
       show: true
+  });
+
+  $('#exists').modal({
+    show: true
   });
   </script>
 

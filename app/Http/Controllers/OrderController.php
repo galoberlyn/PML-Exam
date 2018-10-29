@@ -10,12 +10,6 @@ use App\PizzaTopping;
 use DB;
 class OrderController extends Controller
 
-/*
- *
- * POST Request handler
- *
- *
- */
 {
     public function order_validation(Request $request){
 
@@ -36,16 +30,17 @@ class OrderController extends Controller
     	$toppings      = "toppings";
     	$item          = "item";
     	
-    	DB::beginTransaction();
+    	
     	try{
 
 	    	$pml_string      = $request->input('pml_order');
 	    	$processed       = str_replace(array("{", "}"), array("<",">"), $pml_string); //replace
 			$array_pml       = simplexml_load_string($processed); //convert to object
 	    	$pml_obj         = $this->xmlObjToArr($array_pml);
+            // return count($pml_obj[$children][$pizza][0][$children][$toppings][0][$children][$item]); //kinginamo
 			$check = Order::where('order_id',$pml_obj['attributes']['number'])->get();
 			if(count($check) > 0){
-				return "order number already exist";
+				return redirect('/orders')->with("exist", "exist");
 			}
 
 	    	if(substr($processed, 0, 6) == "<order"){
@@ -53,22 +48,24 @@ class OrderController extends Controller
 	    		$pizza_count            = count($pml_obj[$children][$pizza]);
 	    		$orders_m->order_id     = $pml_obj['attributes']['number'];
 
-	    		for($i = 0; $i<$pizza_count; $i++){ //insert pizza
-			    	$pizza_m            = new Pizza;
-			    	$pizza_details_m    = new PizzaDetail;
-			    	
+	    		for($i = 0; $i<$pizza_count; $i++){
 
-	    			$last_pizza_id         = $pizza_m->pizza_id + 1;
+			    	$pizza_m               = new Pizza;
+			    	$pizza_details_m       = new PizzaDetail;			    	
+	    			$last_pizza_id         = Pizza::max('pizza_id') + 1;
 	    			$pizza_m->pizza_id     = $last_pizza_id;
 
 	    			if($pml_obj[$children][$pizza][$i][$attributes][$number]-1 !== $i){
+
 	    				return "invalid format!";
 
 	    			}else{
 
+	    				//assign values ready for query
 	    				$pizza_m->order_id             = $pml_obj[$attributes][$number];
 	    				$pizza_m->pizza_number         = $pml_obj[$children][$pizza][$i][$attributes][$number];
 	    				$pizza_details_m->pizza_id     = $last_pizza_id;
+	    				$pizza_details_m->order_id     = $pml_obj[$attributes][$number];
 	    				$pizza_details_m->size         = $pml_obj[$children][$pizza][$i][$children][$size][0][$text];
 	    				$pizza_details_m->crust        = $pml_obj[$children][$pizza][$i][$children][$crust][0][$text];
 	    				$pizza_type_container          = $pml_obj[$children][$pizza][$i][$children][$type_str][0][$text];
@@ -83,16 +80,14 @@ class OrderController extends Controller
 
 	    						for($j=0; $j<$toppings_counter; $j++){
 
-	    							$pizza_topping_m           = new PizzaTopping;
-	    							$pizza_topping_m->pizza_id = $last_pizza_id;
-
 	    							if($pml_obj[$children][$pizza][$i][$children][$toppings][$j][$attributes][$area]==$j){
-
-	    								$pizza_topping_m->pizza_area = $pml_obj[$children][$pizza][1][$children][$toppings][$j][$attributes][$area];
-
+                                        
 	    								for($k=0; $k<count($pml_obj[$children][$pizza][$i][$children][$toppings][$j][$children][$item]); $k++){
-	    									
+	    									$pizza_topping_m             = new PizzaTopping;
+                                            $pizza_topping_m->order_id = $pml_obj[$attributes][$number];
+                                            $pizza_topping_m->pizza_id = $last_pizza_id;
 	    									$pizza_topping_m->pizza_item = $pml_obj[$children][$pizza][$i][$children][$toppings][$j][$children][$item][$k][$text];
+                                            $pizza_topping_m->pizza_area = $pml_obj[$children][$pizza][$i][$children][$toppings][$j][$attributes][$area];
 	    									$pizza_topping_m->save();
 	    								}
 
@@ -104,7 +99,7 @@ class OrderController extends Controller
 	    					
 	    				}else{
 	    					return redirect('/orders')->with("error", "error");
-	    					DB::rollback();
+	    				
 	    				}
 	    					
 	    			}
@@ -117,12 +112,12 @@ class OrderController extends Controller
 
 	    	}else{
 	    		return redirect('/orders')->with("error", "error");
-    			DB::rollback();
 	    	}
 	    	
-	    	return view('layouts.order_system')->with('success', 'success');
+	    	return redirect('/orders')->with('success', 'success');
 
     	}catch(\Exception $e){
+            return $e->getMessage();
     		return redirect('/orders')->with("error", "error");
     		DB::rollback();
     	}
@@ -135,11 +130,7 @@ class OrderController extends Controller
      *
      */
     public function typeChecker($pizza_type){
-    	if($pizza_type == "Hawaiian" || $pizza_type == "Chicken Fujita" || $pizza_type == "custom"){
-    		return true;
-    	}else{
-    		return false;
-    	}
+    	return ($pizza_type == "Hawaiian" || $pizza_type == "Chicken Fujita" || $pizza_type == "custom");
     }
 
     /*
