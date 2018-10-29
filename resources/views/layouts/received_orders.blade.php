@@ -47,12 +47,37 @@
           			<p>Pizza {{$pizzas->pizza_number}} - 
           			@foreach($pizza_detail as $pizza_details)
           				@if($pizza_details->order_id == $order_m->order_id && $pizza_details->pizza_id == $pizzas->pizza_id)
-          					{{$pizza_details->size}}, {{$pizza_details-> crust}},{{$pizza_details->type}}<br>
-          						
+          					{{$pizza_details->size}}, {{$pizza_details-> crust}},{{$pizza_details->type}}<br><br>
+          					
+          					Toppings Whole:<br>
           					@foreach($pizza_topping as $toppings)
-          						@if($toppings->order_id == $orders->order_id)
-          							{{$toppings->pizza_item}}
-          						@endif
+          						@if($toppings->pizza_area === 0)
+          						
+	          						@if($toppings->order_id == $orders->order_id)
+	          							{{$toppings->pizza_item}}<br>
+	          						@endif
+	          					@endif
+          					@endforeach
+          					<br><br>
+          					Toppings First-half:<br>
+          					@foreach($pizza_topping as $toppings2)
+          						@if($toppings2->pizza_area === 1)
+          						
+	          						@if($toppings2->order_id == $orders->order_id)
+	          							{{$toppings2->pizza_item}}<br>
+	          						@endif
+	          					@endif
+          					@endforeach
+
+          					<br><br>
+          					Toppings Second-half:<br>
+          					@foreach($pizza_topping as $toppings3)
+          						@if($toppings3->pizza_area === 2)
+          						
+	          						@if($toppings3->order_id == $orders->order_id)
+	          							{{$toppings3->pizza_item}}<br>
+	          						@endif
+	          					@endif
           					@endforeach
 
           				@endif
