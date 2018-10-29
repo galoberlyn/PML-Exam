@@ -10,7 +10,7 @@
       </div>
       <nav id="nav-menu-container">
         <ul class="nav-menu">
-          <li><a href="#contact">See Orders</a></li>
+          <li><a href="/received">See Orders</a></li>
         </ul>
       </nav><!-- #nav-menu-container -->
     </div>
@@ -21,13 +21,13 @@
     <div class="hero-container">
       <h1>Pizza Cravings?</h1>
       <h2>Awesome! You've come to the right place. Order now!</h2>
-      <a href="#about" class="btn-get-started">PML Upload</a><br>
-      <h2>OR</h2>
       <a data-toggle="modal" href="" data-target="#textAreaModal" class="btn-get-started">Enter Order in pml format</a>
     </div>
   </section><!-- #hero -->
 
   <!-- ====================Modal for Pizza Markup Language=================== -->
+<form action='/received' method="POST">
+{{csrf_field()}}
 <div class="modal fade" id="textAreaModal" tabindex="-1" role="dialog" aria-labelledby="textAreaModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -38,16 +38,16 @@
         </button>
       </div>
       <div class="modal-body">
-      	<!-- todo form, validation and all that -->
-        <textarea rows="13" class="form-control" style="height: 100%;"></textarea>
+          <textarea name="pml_order" rows="16" style="font-size: 15px;" class="form-control"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-custom">Save changes</button>
+        <button type="submit" class="btn btn-custom">Send Order</button>
       </div>
     </div>
   </div>
 </div> 
+</form>
 <!-- modal pml -->
 
 @endsection

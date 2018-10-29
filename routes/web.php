@@ -18,3 +18,7 @@ Route::get('/', function () {
 Route::get('/orders', function () {
     return view('layouts.order_system');
 });
+
+Route::post('/received', 'OrderController@order_validation');
+
+Route::get('/received', "ReceiveController@index");

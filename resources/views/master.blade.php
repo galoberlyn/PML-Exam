@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Regna Bootstrap Template</title>
+  <title>Domino's Pizza</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -27,16 +27,16 @@
 </head>
 
 <body>
+  
+@yield('home')
 
+<main id="main">
 
-  @yield('home')
+@include('layouts.messages');
 
-  <main id="main">
+@yield('orders')
 
-   
-
-  </main>
-
+</main>
   <!-- JavaScript Libraries -->
   <script src="js/jquery/jquery.min.js"></script>
   <script src="js/jquery/jquery-migrate.min.js"></script>
@@ -48,9 +48,18 @@
   <script src="js/hoverIntent.js"></script>
   <script src="js/superfish.min.js"></script>
 
+    <!-- Dev Scripts here -->
+  <script>
+  $('#error').modal({
+      show: true
+  });
+  $('#success').modal({
+      show: true
+  });
+  </script>
+
 
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
-
 </body>
 </html>

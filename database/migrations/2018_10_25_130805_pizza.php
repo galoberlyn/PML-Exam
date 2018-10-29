@@ -15,6 +15,7 @@ class Pizza extends Migration
     {
         Schema::create('pizza', function (Blueprint $table) {
         $table->increments('id');
+        $table->integer('order_id');
         $table->integer('pizza_id');
         $table->integer('pizza_number');
         $table->timestamps();
