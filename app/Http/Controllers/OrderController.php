@@ -70,9 +70,7 @@ class OrderController extends Controller
 	    				$pizza_details_m->crust        = $pml_obj[$children][$pizza][$i][$children][$crust][0][$text];
 	    				$pizza_type_container          = $pml_obj[$children][$pizza][$i][$children][$type_str][0][$text];
 
-	    				if($this->typeChecker($pizza_type_container)){
-
-	    					$pizza_details_m->type         = $pizza_type_container;
+	    					$pizza_details_m->type     = $pizza_type_container;
 
 	    					if($pizza_type_container=="custom"){
 
@@ -97,11 +95,6 @@ class OrderController extends Controller
 
 	    					}
 	    					
-	    				}else{
-                            DB::rollback();
-	    					return redirect('/orders')->with("wrong_type", "error");   	    				
-	    				}
-	    					
 	    			}
 
 				$orders_m->save();
@@ -114,7 +107,7 @@ class OrderController extends Controller
                 DB::rollback();
 	    		return redirect('/orders')->with("error", "error");
 	    	}
-	    	
+	    	DB::commit();
 	    	return redirect('/orders')->with('success', 'success');
 
     	}catch(\Exception $e){
@@ -124,15 +117,6 @@ class OrderController extends Controller
     	
     }
 
-
-    /*
-     * @boolean
-     * Checks if pizza type is valid
-     *
-     */
-    public function typeChecker($pizza_type){
-    	return ($pizza_type == "Hawaiian" || $pizza_type == "Chicken Fajita" || $pizza_type == "custom");
-    }
 
     /*
      * @array
