@@ -61,6 +61,11 @@
   $('#exists').modal({
     show: true
   });
+
+  $('#wrong').modal({
+    show: true
+  });
+  
   </script>
 
 

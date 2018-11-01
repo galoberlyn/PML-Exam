@@ -97,8 +97,8 @@ class OrderController extends Controller
 	    					}
 	    					
 	    				}else{
-	    					return redirect('/orders')->with("error", "error");
-	    				
+                            DB::rollback();
+	    					return redirect('/orders')->with("wrong_type", "error");   	    				
 	    				}
 	    					
 	    			}
@@ -129,7 +129,7 @@ class OrderController extends Controller
      *
      */
     public function typeChecker($pizza_type){
-    	return ($pizza_type == "Hawaiian" || $pizza_type == "Chicken Fujita" || $pizza_type == "custom");
+    	return ($pizza_type == "Hawaiian" || $pizza_type == "Chicken Fajita" || $pizza_type == "custom");
     }
 
     /*

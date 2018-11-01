@@ -58,3 +58,23 @@
   </div>  
   </div>
   @endif
+
+   @if(session('wrong_type'))
+ <div class="container">
+  <div class="row">      
+  <div id="wrong" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel4">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+      
+        <div class="modal-body">
+      <div class="col-xs-1" align="center">
+        <h3 style="color: orange;">Sorry!</h3>
+        <p style="color: orange;">Only Chicken Fajita(1), Hawaiian(2), or custom(3) pizza type is available</p>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>  
+  </div>
+  @endif
