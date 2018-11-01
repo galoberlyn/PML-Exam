@@ -8,6 +8,7 @@ use App\Order;
 use App\PizzaDetail;
 use App\PizzaTopping;
 use DB;
+use Exception;
 class OrderController extends Controller
 
 {
@@ -37,15 +38,15 @@ class OrderController extends Controller
 	    	$processed       = str_replace(array("{", "}"), array("<",">"), $pml_string); //replace
 			$array_pml       = simplexml_load_string($processed); //convert to object
 	    	$pml_obj         = $this->xmlObjToArr($array_pml);
-			$check = Order::where('order_id',$pml_obj['attributes']['number'])->get();
+			$check = Order::where('order_id',$pml_obj[$attributes][$number])->get();
 			if(count($check) > 0){
 				return redirect('/orders')->with("exist", "exist");
 			}
-
+            DB::beginTransaction();
 	    	if(substr($processed, 0, 6) == "<order"){
 
 	    		$pizza_count            = count($pml_obj[$children][$pizza]);
-	    		$orders_m->order_id     = $pml_obj['attributes']['number'];
+	    		$orders_m->order_id     = $pml_obj[$attributes][$number];
 
 	    		for($i = 0; $i<$pizza_count; $i++){
 
@@ -56,7 +57,7 @@ class OrderController extends Controller
 
 	    			if($pml_obj[$children][$pizza][$i][$attributes][$number]-1 !== $i){
 
-	    				return "invalid format!";
+	    				throw new Exception();
 
 	    			}else{
 
@@ -110,18 +111,19 @@ class OrderController extends Controller
 	    		}
 
 	    	}else{
+                DB::rollback();
 	    		return redirect('/orders')->with("error", "error");
 	    	}
 	    	
 	    	return redirect('/orders')->with('success', 'success');
 
     	}catch(\Exception $e){
-            return $e->getMessage();
-    		return redirect('/orders')->with("error", "error");
     		DB::rollback();
+            return redirect('/orders')->with("error", "error");
     	}
     	
     }
+
 
     /*
      * @boolean

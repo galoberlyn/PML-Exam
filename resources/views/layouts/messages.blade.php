@@ -9,7 +9,7 @@
         
         <div class="col-xs-1" align="center">
           <h3 style="color: red;">Oops</h3>
-          <p style="color: red;">It looks like, you've entered an invalid pml string ;(</p>
+          <p style="color: red;">It looks like, you've entered an invalid pml format :(</p>
         </div>
         </div>
       </div>
