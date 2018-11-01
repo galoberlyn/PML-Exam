@@ -52,7 +52,7 @@
                     @if($pizza_details->type == 'custom')
                     Toppings Whole:<br>
                     @foreach($pizza_topping as $toppings)
-                      @if($toppings->pizza_area === 0)
+                      @if($toppings->pizza_area == 0)
                       
                         @if($toppings->order_id == $orders->order_id)
                           {{$toppings->pizza_item}}<br>
@@ -62,7 +62,7 @@
                     <br><br>
                     Toppings First-half:<br>
                     @foreach($pizza_topping as $toppings2)
-                      @if($toppings2->pizza_area === 1)
+                      @if($toppings2->pizza_area == 1)
                       
                         @if($toppings2->order_id == $orders->order_id)
                           {{$toppings2->pizza_item}}<br>
@@ -73,7 +73,7 @@
                     <br><br>
                     Toppings Second-half:<br>
                     @foreach($pizza_topping as $toppings3)
-                      @if($toppings3->pizza_area === 2)
+                      @if($toppings3->pizza_area == 2)
                       
                         @if($toppings3->order_id == $orders->order_id)
                           {{$toppings3->pizza_item}}<br>
